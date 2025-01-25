@@ -1,0 +1,6 @@
+Differences Between Interfaces and Custom Types
+
+- Types can be used with primitives and unions unlike interfaces
+
+e.g type Point = number | string
+const p1: Point = 1
