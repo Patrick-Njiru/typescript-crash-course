@@ -12,34 +12,55 @@ const numbers: number[] = [1, 2, 3];
 const list: any[] = [1, true, "free"];
 
 // Tuple - Specify the type of every element in the list in the order that they appear
-const person: [number, string, boolean] = [id, firstName, male];
+// Ideal for key-value pairs
+const person: [number, string] = [2, "Patrick"];
+// person.push('j')
+// console.log(person)
 
 // An array of tuples
 const employee: [number, string][] = [
 	[1, "Patrick"],
 	[2, "John"],
 ];
+// employee.push
 
-// Union
+// Union - |
 let userId: string | number;
 userId = "U-24";
 userId = 24;
 
-// Enum
+// Enum - Represent a list of related constants
 enum Direction1 {
-	// Each direction has a number value, usually starting from 0
-	Up = 1, // The rest will increment by 1 from
-	Down,
-	Left,
-	Right,
+	Up, // 0
+	Down, // 1
+	Left, // 2
+	Right, // 3
 }
 
+// changing the first value
 enum Direction2 {
+	Up = 1, // Setting this to a certain number  changes the other values
+	Down, // 2
+	Left, // 3
+	Right, // 4
+}
+
+// Assigning strings as values
+enum Direction3 {
 	Up = "UP",
 	Down = "DOWN",
 	Left = "LEFT",
 	Right = "RIGHT",
 }
+
+// Using const for enums will result in the compiler generating a more optimized code.
+const enum Size {
+	Small,
+	Medium = 10,
+	Large,
+}
+const mySize: Size = Size.Large;
+// console.log(mySize);
 
 // Object
 const user1: { id: number; firstName: string } = {
@@ -47,7 +68,7 @@ const user1: { id: number; firstName: string } = {
 	firstName: "Patrick",
 };
 
-// Creating a custom Type
+// Type Alias (custom type)
 type User = {
 	id: number;
 	name: string;
@@ -74,7 +95,7 @@ function addNumber(x: number, y: number): number {
 const log = (message: string | number): void => console.log(message);
 
 // Interface
-// preferred over custom types for objects
+// preferred over type aliases for objects
 interface UserInterface {
 	id: number;
 	name: string;
@@ -90,6 +111,16 @@ interface Agent {
 	id: number;
 	fullName: string;
 	username?: string; // Optional value
+}
+
+function calculateTax(income: number, taxYear?: number): number {
+	// in this case taxYear is optional
+	return (taxYear || 2022) < 2022 ? income * 1.2 : income * 1.3;
+}
+
+// a better approach is setting a default value. TypeScript will infer the type from the value
+function calculateTax2(income: number, taxYear = 2022): number {
+	return taxYear < 2022 ? income * 1.2 : income * 1.3;
 }
 
 const agent1: Agent = {
@@ -178,3 +209,51 @@ let strArray = getArray<string>(["brad", "john", "joe"]); // array of strings
 
 numArray.push(3);
 // strArray.push(3); // error
+
+// Intersection - &
+type Draggable = {
+	drag: () => void;
+};
+
+type Resizable = {
+	resizable: () => void;
+};
+
+type UIWidget = Draggable & Resizable;
+
+let textBox: UIWidget = {
+	drag: () => {},
+	resizable: () => {},
+};
+
+// Literal Types - for limiting the values we can assign to a variable
+type Quantity = 50 | 100;
+let quantity: Quantity;
+// quantity = 52; // error
+
+type Metric = "cm" | "inch";
+
+// Nullable Types - null or undefined
+const greet = (name: string | null | undefined) =>
+	void console.log(name ? name.toUpperCase() : "Hola");
+
+greet(undefined);
+
+// Optional Chaining - ?
+type Customer = {
+	birthday?: Date;
+};
+
+function getCustomer(id: number): Customer | null | undefined {
+	return id === 0 ? null : { birthday: new Date() };
+}
+
+const customer = getCustomer(0);
+console.log(customer?.birthday?.getFullYear()); // only execute if the customer and the birthday is not null or undefined, otherwise return undefined.
+
+// Optional Element Access Operator - in arrays
+// customers?.[0]
+
+// Optional call operator
+const foo: any = null;
+foo?.("a"); // Only execute if foo is referencing an actual function
