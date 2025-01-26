@@ -234,8 +234,8 @@ let quantity: Quantity;
 type Metric = "cm" | "inch";
 
 // Nullable Types - null or undefined
-const greet = (name: string | null | undefined) =>
-	void console.log(name ? name.toUpperCase() : "Hola");
+const greet = (name: string | null | undefined) :void =>
+	console.log(name ? name.toUpperCase() : "Hola");
 
 greet(undefined);
 
